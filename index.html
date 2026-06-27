@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Photography & Album Studio</title>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    <style>
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #fafafa;
+            color: #222;
+            line-height: 1.6;
+        }
+
+        /* Navigation Header */
+        header {
+            background: #ffffff;
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            color: #111;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #555;
+            margin-left: 20px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav a:hover {
+            color: #000;
+        }
+
+        /* Hero Banner Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=1400&q=80') no-repeat center center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: #fff;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: 46px;
+            margin-bottom: 12px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 35px;
+            background: #fff;
+            color: #111;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 4px;
+            transition: background 0.3s, transform 0.2s;
+        }
+
+        .btn:hover {
+            background: #000;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        /* Specialties Section */
+        .services-section {
+            padding: 80px 8% 40px 8%;
+            text-align: center;
+            background-color: #fafafa;
+        }
+
+        .services-section h2 {
+            font-size: 30px;
+            margin-bottom: 40px;
+            font-weight: 600;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+        }
+
+        .service-card {
+            background: #fff;
+            padding: 30px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            border: 1px solid #eee;
+            transition: transform 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .service-card h3 {
+            font-size: 18px;
+            margin-bottom: 12px;
+            color: #111;
+        }
+
+        /* Showcase Gallery Section */
+        .showcase-section {
+            padding: 40px 8% 80px 8%;
+            text-align: center;
+            background-color: #fafafa;
+        }
+
+        .showcase-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1100px;
+            margin: 0 auto;
+            align-items: start;
+        }
+
+        .showcase-card {
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #eee;
+            text-align: left;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            transition: transform 0.3s;
+        }
+
+        .showcase-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .showcase-img {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+            background-color: #ddd;
+        }
+
+        .birthday-card .showcase-img {
+            height: 400px;
+            object-fit: contain;
+            background-color: #111;
+        }
+
+        .showcase-info {
+            padding: 20px;
+        }
+
+        .showcase-info h3 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: #111;
+        }
+
+        .showcase-info p {
+            color: #666;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        /* Form & Checkout Layout Section */
+        .order-section {
+            background-color: #f4f6f9;
+            padding: 80px 8%;
+        }
+
+        .order-section h2 {
+            text-align: center;
+            font-size: 30px;
+            margin-bottom: 40px;
+        }
+
+        .checkout-container {
+            max-width: 1050px;
+            margin: 0 auto;
+            background: #ffffff;
+            border-radius: 14px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.03);
+            border: 1px solid #eef1f6;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            overflow: hidden;
+        }
+
+        @media (max-width: 768px) {
+            .checkout-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-side {
+            padding: 35px;
+            border-right: 1px solid #eef1f6;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 13px;
+            color: #444;
+            text-transform: uppercase;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 15px;
+            background-color: #fafbfd;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #000;
+            background-color: #fff;
+        }
+
+        .location-control {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .location-btn {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 7px 14px;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: opacity 0.2s;
+        }
+
+        .location-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .box-message {
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            padding: 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #475569;
+            margin-top: 8px;
+            line-height: 1.5;
+        }
+
+        .instruction-box {
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            color: #166534;
+        }
+
+        .instruction-box h4 {
+            font-size: 14px;
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+
+        .instruction-box ol {
+            margin-left: 20px;
+            font-size: 13px;
+        }
+
+        .agreement-box {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background-color: #fffbeb;
+            border: 1px solid #fef3c7;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+        }
+
+        .agreement-box input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            margin-top: 3px;
+            cursor: pointer;
+        }
+
+        .agreement-box label {
+            font-size: 13px;
+            color: #92400e;
+            cursor: pointer;
+            line-height: 1.5;
+        }
+
+        .agreement-box strong {
+            color: #78350f;
+        }
+
+        .summary-side {
+            padding: 35px;
+            background-color: #fafbfd;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .price-line {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 12px;
+        }
+
+        .price-line.total-line {
+            font-weight: 700;
+            font-size: 16px;
+            color: #000;
+            border-top: 1px solid #eef1f6;
+            padding-top: 15px;
+            margin-top: 15px;
+        }
+
+        .notice-box {
+            background: #fff5f5;
+            border-left: 4px solid #e53e3e;
+            padding: 14px;
+            border-radius: 6px;
+            margin: 25px 0;
+        }
+
+        .notice-box p {
+            font-size: 13px;
+            font-weight: 600;
+            color: #c53030;
+            margin-bottom: 2px;
+        }
+
+        .notice-box span {
+            font-size: 12px;
+            color: #9b2c2c;
+            line-height: 1.4;
+        }
+
+        .submit-checkout-btn {
+            background: #000;
+            color: #fff;
+            padding: 15px;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .validation-error {
+            color: #e53e3e;
+            font-size: 12px;
+            font-weight: 500;
+            margin-top: 4px;
+            display: none;
+        }
+
+        footer {
+            text-align: center;
+            color: #888;
+            font-size: 13px;
+            padding: 35px 0;
+            background: #111;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">ALEX STUDIO</div>
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#specialties">Our Specialities</a>
+            <a href="#order">Order Form</a>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <h1>Capturing Your Purest Moments</h1>
+        <p>Premium Wedding Albums, Puberty Function Design Booklets & Luxury Frames</p>
+        <a href="#order" class="btn">Launch Order Dashboard</a>
+    </section>
+
+    <section class="services-section" id="specialties">
+        <h2>Our Specialities</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <h3>Event Photography</h3>
+                <p>Expert coverage for Marriages, Puberty functions, Birthdays, and all traditional family events.</p>
+            </div>
+            <div class="service-card">
+                <h3>Custom Album Design</h3>
+                <p>Beautiful, modern, and story-driven magazine-style album layouts tailored perfectly to your event.</p>
+            </div>
+            <div class="service-card">
+                <h3>Premium Printing & Framing</h3>
+                <p>High-end HD printing options with custom photo frames that keep your memories fresh forever.</p>
+            </div>
+            <div class="service-card">
+                <h3>Birthday Frames</h3>
+                <p>Exclusive customized birthday borders, montage collages, and name-engraved display frames.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="showcase-section">
+        <div class="showcase-grid">
+            <div class="showcase-card">
+                <img src="Album.jpg" alt="Premium Marriage Album Design" class="showcase-img">
+                <div class="showcase-info">
+                    <h3>Flush-Mount Event Albums</h3>
+                    <p>Lay-flat panoramic magazine spreads printed on heavy tear-resistant sheets. Beautiful custom cover options for weddings and traditional functions.</p>
+                </div>
+            </div>
+
+            <div class="showcase-card">
+                <img src="Frames.jpg" alt="Custom Photo Frames" class="showcase-img">
+                <div class="showcase-info">
+                    <h3>Teakwood & Acrylic Framing</h3>
+                    <p>Minimalist display frames equipped with non-reflective glass shield layers to guarantee structural longevity for generational family wall sets.</p>
+                </div>
+            </div>
+
+            <div class="showcase-card birthday-card">
+                <img src="Birthday.jpg" alt="Custom Birthday Frames" class="showcase-img">
+                <div class="showcase-info">
+                    <h3>Custom Birthday Design Frames</h3>
+                    <p>Vibrant customized frames featuring creative text overlays, themed graphics, and glossy protective coatings perfect for birthday milestones.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="order-section" id="order">
+        <h2>Secure Order Entry Portal</h2>
+        <div class="checkout-container">
+            
+            <div class="form-side">
+                <form id="orderForm" onsubmit="handleOrderSubmission(event)">
+                    
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" required placeholder="Enter recipient complete name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phoneNumber">Phone Number</label>
+                        <input type="tel" id="phoneNumber" required placeholder="Enter 10-digit mobile number" maxlength="10" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                        <div id="phoneError" class="validation-error">Please enter a valid, authentic 10-digit phone number.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="location-control">
+                            <label for="address" style="margin-bottom: 0;">Delivery Address</label>
+                            <button type="button" id="getLiveLocationBtn" class="location-btn" onclick="fetchLiveGPSLocation()">
+                                📍 Use Current Location
+                            </button>
+                        </div>
+                        <textarea id="address" rows="4" required placeholder="House No, Building, Street Name, Landmark... (Type manually if location lookup fails or is wrong)"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pincode">Pincode</label>
+                        <input type="text" id="pincode" required placeholder="Example: 627 859" maxlength="7">
+                        <div id="pincodeError" class="validation-error">Format must match 6 digits with a space (e.g., 627 859).</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="customerRequirements">Special Notes / Requirements</label>
+                        <textarea id="customerRequirements" rows="3" placeholder="Add custom dimensions, framing style preferences, or custom requests..."></textarea>
+                        <div class="box-message">
+                            <strong>💡 Order Format Rule:</strong> Please outline structural specifications regarding layout preferences (e.g., Matte finish or High-Gloss covers) directly within this message box.
+                        </div>
+                    </div>
+
+                    <div class="instruction-box">
+                        <h4>🖼️ How to Send Your Images:</h4>
+                        <ol>
+                            <li>Click the black button on the right to open your WhatsApp order chat.</li>
+                            <li>Send the automatically generated order text details.</li>
+                            <li>Tap the <strong>Attach Icon (📎)</strong> inside your chat box.</li>
+                            <li>Choose <strong>Document</strong> to select and send original quality photos.</li>
+                        </ol>
+                    </div>
+
+                    <div class="agreement-box">
+                        <input type="checkbox" id="studioAgreement" required>
+                        <label for="studioAgreement">
+                            I accept the terms: <strong>Orders cannot be returned or canceled once finalized.</strong> In case of damage to print deliveries, video re-edits or structural adjustments cannot be executed unless alternative raw assets are filed.
+                        </label>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="summary-side">
+                <div>
+                    <h3>Order Summary</h3>
+                    <div class="price-line"><span>Media Layout Project Delivery</span><span>Prepayment Processing</span></div>
+                    <div class="price-line"><span>HD Gloss Photo Frame Design</span><span>Included</span></div>
+                    <div class="price-line"><span>Insured Premium Shipping</span><span>Free Shipping</span></div>
+                    <div class="price-line total-line"><span>Payment Protocol Required</span><span>Online Only</span></div>
+                    
+                    <div class="notice-box">
+                        <p>⚠️ Cash on Delivery (COD) Unavailable</p>
+                        <span>Custom studio printing requires digital clearance validation prior to allocating raw print materials.</span>
+                    </div>
+                </div>
+                <button type="submit" form="orderForm" class="submit-checkout-btn">Verify Order & Open WhatsApp</button>
+            </div>
+
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Studio Premium Portal. Managed Professionally.</p>
+    </footer>
+
+    <script>
+        // --- CONFIGURATION ZONE ---
+        const WHATSAPP_NUMBER = "919789646209"; 
+
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_MESSAGING_ID",
+            appId: "YOUR_APP_ID"
+        };
+        // --- END CONFIGURATION ZONE ---
+
+        if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
+            firebase.initializeApp(firebaseConfig);
+        }
+
+        document.getElementById('pincode').addEventListener('input', function (e) {
+            let field = e.target;
+            let raw = field.value.replace(/\s/g, '').replace(/\D/g, '');
+            if (raw.length > 3) {
+                raw = raw.slice(0, 3) + ' ' + raw.slice(3, 6);
+            }
+            field.value = raw;
+        });
+
+        function fetchLiveGPSLocation() {
+            const addressInput = document.getElementById('address');
+            const pincodeInput = document.getElementById('pincode');
+            const getLiveLocationBtn = document.getElementById('getLiveLocationBtn');
+
+            getLiveLocationBtn.disabled = true;
+            getLiveLocationBtn.textContent = "Locating...";
+            addressInput.value = "Fetching live address details...";
+
+            navigator.geolocation.getCurrentPosition(
+                async (position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    try {
+                        const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`);
+                        const data = await response.json();
+                        if (data && data.display_name) {
+                            addressInput.value = data.display_name;
+                            if(data.address && data.address.postcode) {
+                               const cp = data.address.postcode.replace(/\s/g, '');
+                               if(cp.length === 6 && /^\d+$/.test(cp)) {
+                                   pincodeInput.value = cp.slice(0, 3) + ' ' + cp.slice(3, 6);
+                               }
+                            }
+                        }
+                    } catch (err) {
+                        addressInput.value = `📍 Lat: ${lat.toFixed(5)}, Lon: ${lon.toFixed(5)}`;
+                    } finally {
+                        getLiveLocationBtn.disabled = false;
+                        getLiveLocationBtn.textContent = "📍 Use Current Location";
+                    }
+                },
+                () => {
+                    getLiveLocationBtn.disabled = false;
+                    getLiveLocationBtn.textContent = "📍 Use Current Location";
+                    alert("Unable to fetch location. Please type manually.");
+                },
+                { enableHighAccuracy: true, timeout: 10000 }
+            );
+        }
+
+        function verifyAntiScamDesign(phone, pin) {
+            const pErr = document.getElementById('phoneError');
+            const pinErr = document.getElementById('pincodeError');
+            pErr.style.display = 'none';
+            pinErr.style.display = 'none';
+
+            if (!/^\d{10}$/.test(phone)) {
+                pErr.style.display = 'block';
+                return false;
+            }
+            if (/^(\d)\1{9}$/.test(phone) || phone === "1234567890") {
+                pErr.style.display = 'block';
+                return false;
+            }
+            if (!/^\d{3}\s\d{3}$/.test(pin)) {
+                pinErr.style.display = 'block';
+                return false;
+            }
+            return true;
+        }
+
+        function handleOrderSubmission(event) {
+            event.preventDefault();
+
+            const name = document.getElementById('fullName').value;
+            const phone = document.getElementById('phoneNumber').value;
+            const pincode = document.getElementById('pincode').value;
+            const address = document.getElementById('address').value;
+            const notes = document.getElementById('customerRequirements').value;
+            const checkedAgreement = document.getElementById('studioAgreement').checked;
+
+            if (!checkedAgreement) {
+                alert("Please check the agreement box to continue.");
+                return;
+            }
+
+            if (!verifyAntiScamDesign(phone, pincode)) return;
+
+            const structuredPayload = {
+                customerName: name,
+                customerPhone: phone,
+                deliveryPincode: pincode,
+                deliveryAddress: address,
+                customerNotes: notes || "None provided",
+                uploadedImages: "Client will attach original photos manually as Document files in chat.",
+                termsAccepted: true,
+                timestamp: new Date().toISOString()
+            };
+
+            if (typeof firebase !== 'undefined' && firebase.apps.length > 0) {
+                firebase.database().ref('orders/').push(structuredPayload)
+                    .then(() => performWhatsAppRedirect(structuredPayload))
+                    .catch(() => performWhatsAppRedirect(structuredPayload));
+            } else {
+                performWhatsAppRedirect(structuredPayload);
+            }
+        }
+
+        function performWhatsAppRedirect(data) {
+            const messageString = `📦 *NEW STUDIO ORDER RECEIVED*\n` +
+                                 `━━━━━━━━━━━━━━━━━━━━\n\n` +
+                                 `👤 *Client Name:* ${data.customerName}\n` +
+                                 `📱 *Phone Number:* ${data.customerPhone}\n\n` +
+                                 `📍 *Delivery Address:* \n${data.deliveryAddress}\n\n` +
+                                 `📮 *Pincode:* ${data.deliveryPincode}\n\n` +
+                                 `🖼️ *Images:* ${data.uploadedImages}\n\n` +
+                                 `📝 *Special Requirements:* \n${data.customerNotes}\n\n` +
+                                 `⚖️ *Terms:* Agreement signed.\n\n` +
+                                 `━━━━━━━━━━━━━━━━━━━━`;
+
+            const urlSafeQuery = encodeURIComponent(messageString);
+            window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${urlSafeQuery}`, '_blank');
+        }
+    </script>
+</body>
+</html>
