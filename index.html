@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Premium Photography & Album Studio</title>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
@@ -13,7 +13,6 @@
             padding: 0;
             box-sizing: border-box;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
-            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -25,7 +24,7 @@
         /* Navigation Header */
         header {
             background: #ffffff;
-            padding: 15px 5%;
+            padding: 20px 8%;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -37,22 +36,17 @@
         }
 
         .logo {
-            font-size: 18px;
+            font-size: 22px;
             font-weight: 700;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             color: #111;
-        }
-
-        nav {
-            display: flex;
-            gap: 12px;
         }
 
         nav a {
             text-decoration: none;
             color: #555;
-            font-size: 13px;
-            font-weight: 600;
+            margin-left: 20px;
+            font-weight: 500;
             transition: color 0.3s;
         }
 
@@ -62,104 +56,99 @@
 
         /* Hero Banner Section */
         .hero {
-            height: 85vh;
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=1400&q=80') no-repeat center center/cover;
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=1400&q=80') no-repeat center center/cover;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
             color: #fff;
-            padding: 0 24px;
-            margin-top: 50px;
+            padding: 0 20px;
         }
 
         .hero h1 {
-            font-size: 32px;
+            font-size: 46px;
             margin-bottom: 12px;
-            font-weight: 700;
+            font-weight: 600;
             letter-spacing: -0.5px;
-            line-height: 1.2;
         }
 
         .hero p {
-            font-size: 16px;
+            font-size: 20px;
             margin-bottom: 30px;
             font-weight: 300;
-            max-width: 500px;
         }
 
         .btn {
             display: inline-block;
-            padding: 14px 28px;
+            padding: 14px 35px;
             background: #fff;
             color: #111;
             text-decoration: none;
             font-weight: 600;
-            border-radius: 6px;
-            font-size: 15px;
-            width: 100%;
-            max-width: 280px;
-            transition: background 0.3s;
+            border-radius: 4px;
+            transition: background 0.3s, transform 0.2s;
         }
 
         .btn:hover {
             background: #000;
             color: #fff;
+            transform: translateY(-2px);
         }
 
         /* Specialties Section */
         .services-section {
-            padding: 60px 5% 30px 5%;
+            padding: 80px 8% 40px 8%;
             text-align: center;
             background-color: #fafafa;
         }
 
         .services-section h2 {
-            font-size: 24px;
-            margin-bottom: 30px;
-            font-weight: 700;
+            font-size: 30px;
+            margin-bottom: 40px;
+            font-weight: 600;
         }
 
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
         }
 
         .service-card {
             background: #fff;
-            padding: 24px 20px;
+            padding: 30px 20px;
             border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.01);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
             border: 1px solid #eee;
-            text-align: left;
+            transition: transform 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
         }
 
         .service-card h3 {
-            font-size: 16px;
-            margin-bottom: 8px;
+            font-size: 18px;
+            margin-bottom: 12px;
             color: #111;
-        }
-
-        .service-card p {
-            font-size: 14px;
-            color: #555;
         }
 
         /* Showcase Gallery Section */
         .showcase-section {
-            padding: 30px 5% 60px 5%;
+            padding: 40px 8% 80px 8%;
             text-align: center;
             background-color: #fafafa;
         }
 
         .showcase-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
             max-width: 1100px;
             margin: 0 auto;
+            align-items: start;
         }
 
         .showcase-card {
@@ -168,29 +157,34 @@
             overflow: hidden;
             border: 1px solid #eee;
             text-align: left;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.01);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            transition: transform 0.3s;
+        }
+
+        .showcase-card:hover {
+            transform: translateY(-5px);
         }
 
         .showcase-img {
             width: 100%;
-            height: 200px;
+            height: 240px;
             object-fit: cover;
             background-color: #ddd;
         }
 
         .birthday-card .showcase-img {
-            height: 320px;
+            height: 400px;
             object-fit: contain;
             background-color: #111;
         }
 
         .showcase-info {
-            padding: 16px;
+            padding: 20px;
         }
 
         .showcase-info h3 {
-            font-size: 16px;
-            margin-bottom: 6px;
+            font-size: 18px;
+            margin-bottom: 8px;
             color: #111;
         }
 
@@ -203,13 +197,13 @@
         /* Form & Checkout Layout Section */
         .order-section {
             background-color: #f4f6f9;
-            padding: 60px 4%;
+            padding: 80px 8%;
         }
 
         .order-section h2 {
             text-align: center;
-            font-size: 24px;
-            margin-bottom: 30px;
+            font-size: 30px;
+            margin-bottom: 40px;
         }
 
         .checkout-container {
@@ -224,20 +218,26 @@
             overflow: hidden;
         }
 
+        @media (max-width: 768px) {
+            .checkout-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
         .form-side {
-            padding: 24px;
+            padding: 35px;
             border-right: 1px solid #eef1f6;
         }
 
         .form-group {
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
 
         .form-group label {
             display: block;
             margin-bottom: 6px;
             font-weight: 600;
-            font-size: 12px;
+            font-size: 13px;
             color: #444;
             text-transform: uppercase;
         }
@@ -246,8 +246,8 @@
             width: 100%;
             padding: 12px;
             border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 16px; /* 16px prevents iOS Safari auto-zooming on focus */
+            border-radius: 6px;
+            font-size: 15px;
             background-color: #fafbfd;
         }
 
@@ -261,33 +261,35 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
 
         .location-btn {
             background: #000;
             color: #fff;
             border: none;
-            padding: 6px 12px;
-            font-size: 11px;
+            padding: 7px 14px;
+            font-size: 12px;
             font-weight: 600;
             border-radius: 4px;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 4px;
+            transition: opacity 0.2s;
         }
 
         .location-btn:disabled {
             opacity: 0.6;
+            cursor: not-allowed;
         }
 
         .box-message {
             background: #f8fafc;
             border: 1px dashed #cbd5e1;
-            padding: 12px;
+            padding: 14px;
             border-radius: 6px;
-            font-size: 12px;
+            font-size: 13px;
             color: #475569;
             margin-top: 8px;
             line-height: 1.5;
@@ -296,92 +298,94 @@
         .instruction-box {
             background-color: #f0fdf4;
             border: 1px solid #bbf7d0;
-            padding: 14px;
+            padding: 15px;
             border-radius: 8px;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
             color: #166534;
         }
 
         .instruction-box h4 {
-            font-size: 13px;
-            margin-bottom: 4px;
+            font-size: 14px;
+            margin-bottom: 6px;
             font-weight: 700;
         }
 
         .instruction-box ol {
-            margin-left: 18px;
-            font-size: 12px;
+            margin-left: 20px;
+            font-size: 13px;
         }
 
         .agreement-box {
             display: flex;
             align-items: flex-start;
-            gap: 10px;
+            gap: 12px;
             background-color: #fffbeb;
             border: 1px solid #fef3c7;
-            padding: 14px;
+            padding: 15px;
             border-radius: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
         }
 
         .agreement-box input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            flex-shrink: 0;
-            margin-top: 2px;
+            width: 18px;
+            height: 18px;
+            margin-top: 3px;
             cursor: pointer;
         }
 
         .agreement-box label {
-            font-size: 12px;
+            font-size: 13px;
             color: #92400e;
             cursor: pointer;
             line-height: 1.5;
         }
 
+        .agreement-box strong {
+            color: #78350f;
+        }
+
         .summary-side {
-            padding: 24px;
+            padding: 35px;
             background-color: #fafbfd;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            border-top: 1px solid #eef1f6;
         }
 
         .price-line {
             display: flex;
             justify-content: space-between;
-            font-size: 13px;
+            font-size: 14px;
             color: #555;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .price-line.total-line {
             font-weight: 700;
-            font-size: 15px;
+            font-size: 16px;
             color: #000;
             border-top: 1px solid #eef1f6;
-            padding-top: 12px;
-            margin-top: 12px;
+            padding-top: 15px;
+            margin-top: 15px;
         }
 
         .notice-box {
             background: #fff5f5;
             border-left: 4px solid #e53e3e;
-            padding: 12px;
+            padding: 14px;
             border-radius: 6px;
-            margin: 20px 0;
+            margin: 25px 0;
         }
 
         .notice-box p {
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 600;
             color: #c53030;
             margin-bottom: 2px;
         }
 
         .notice-box span {
-            font-size: 11px;
+            font-size: 12px;
             color: #9b2c2c;
             line-height: 1.4;
         }
@@ -389,9 +393,9 @@
         .submit-checkout-btn {
             background: #000;
             color: #fff;
-            padding: 14px;
+            padding: 15px;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             font-size: 15px;
             font-weight: 600;
             cursor: pointer;
@@ -409,36 +413,9 @@
         footer {
             text-align: center;
             color: #888;
-            font-size: 12px;
-            padding: 24px 0;
+            font-size: 13px;
+            padding: 35px 0;
             background: #111;
-        }
-
-        /* Desktop & Tablet Specific Layout Adjustments */
-        @media (min-width: 769px) {
-            header { padding: 20px 8%; }
-            .logo { font-size: 22px; }
-            nav a { font-size: 15px; margin-left: 20px; }
-            .hero { height: 100vh; padding: 0 20px; margin-top: 0; }
-            .hero h1 { font-size: 46px; }
-            .hero p { font-size: 20px; max-width: none; }
-            .services-section { padding: 80px 8% 40px 8%; }
-            .services-section h2 { font-size: 30px; }
-            .showcase-section { padding: 40px 8% 80px 8%; }
-            .showcase-img { height: 240px; }
-            .birthday-card .showcase-img { height: 400px; }
-            .order-section { padding: 80px 8%; }
-            .order-section h2 { font-size: 30px; }
-            .checkout-container { grid-template-columns: 1.2fr 0.8fr; }
-            .form-side { padding: 35px; }
-            .summary-side { padding: 35px; border-top: none; }
-        }
-
-        /* Mobile Layout Stack Rules */
-        @media (max-width: 768px) {
-            .checkout-container {
-                grid-template-columns: 1fr;
-            }
         }
     </style>
 </head>
@@ -448,8 +425,8 @@
         <div class="logo">ALEX STUDIO</div>
         <nav>
             <a href="#home">Home</a>
-            <a href="#specialties">Specialities</a>
-            <a href="#order">Order</a>
+            <a href="#specialties">Our Specialities</a>
+            <a href="#order">Order Form</a>
         </nav>
     </header>
 
@@ -552,11 +529,12 @@
                     </div>
 
                     <div class="instruction-box">
-                        <h4>🖼 Honor Quality Setup Requirements:</h4>
+                        <h4>🖼️ How to Send Your Images:</h4>
                         <ol>
-                            <li>Click the checkout button to forward your text details over WhatsApp.</li>
-                            <li>Inside the active chat, select the native clip attachments link icon.</li>
-                            <li>Upload your original layout assets saved cleanly as raw **Document** items.</li>
+                            <li>Click the black button on the right to open your WhatsApp order chat.</li>
+                            <li>Send the automatically generated order text details.</li>
+                            <li>Tap the <strong>Attach Icon (📎)</strong> inside your chat box.</li>
+                            <li>Choose <strong>Document</strong> to select and send original quality photos.</li>
                         </ol>
                     </div>
 
@@ -595,7 +573,7 @@
 
     <script>
         // --- CONFIGURATION ZONE ---
-        const WHATSAPP_NUMBER = "919789646209"; 
+        const WHATSAPP_NUMBER = "919952496764"; 
 
         const firebaseConfig = {
             apiKey: "YOUR_API_KEY",
