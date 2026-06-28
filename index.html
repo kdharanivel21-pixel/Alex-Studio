@@ -4,11 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Premium Photography & Album Studio</title>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        /* Root Variables Matching Your Image Theme */
         :root {
             --primary-gold: #d4af37;
             --secondary-gold: #aa7c11;
@@ -18,7 +17,6 @@
             --text-dark: #222222;
         }
 
-        /* Reset & Base Styles */
         * {
             margin: 0;
             padding: 0;
@@ -34,7 +32,6 @@
             overflow-x: hidden;
         }
 
-        /* Click Ripple Effect Style */
         .click-ripple {
             position: absolute;
             border-radius: 50%;
@@ -226,7 +223,6 @@
             line-height: 1.5;
         }
 
-        /* ORDER SECTION */
         .order-section {
             background: #110a03;
             padding: 90px 8%;
@@ -356,7 +352,6 @@
             margin-bottom: 4px;
         }
 
-        /* UPDATED SIMPLIFIED AGREEMENT BOX */
         .agreement-box {
             display: flex;
             align-items: flex-start;
@@ -463,7 +458,6 @@
             letter-spacing: 0.5px;
         }
 
-        /* POPUP MODAL STYLE */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -752,7 +746,7 @@
     <script>
         const WHATSAPP_NUMBER = "919952496764"; 
 
-        // INTEGRATED VALID FIREBASE CONFIGURATION
+        // Correctly formatted Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBz8U5Iu_PMG9vIni0U-Rk4Gsq_1gxdk0k",
             authDomain: "alex-studio-5b1a8.firebaseapp.com",
@@ -765,12 +759,11 @@
 
         let globalOrderData = null;
 
-        // Auto-initialization
-        if (firebaseConfig.apiKey && firebaseConfig.apiKey !== "YOUR_API_KEY") {
+        // Initialize Firebase cleanly using global compat structure
+        if (typeof firebase !== 'undefined') {
             firebase.initializeApp(firebaseConfig);
         }
 
-        // --- THEME COLOR SHIFT ENGINE ---
         const themePalettes = [
             { primary: '#d4af37', bg: '#1a1105', card: '#2c1e0f' },
             { primary: '#dfb743', bg: '#141414', card: '#262626' },
@@ -864,7 +857,7 @@
                 timestamp: currentDateTimeString
             };
 
-            // Firebase Storage logic execution
+            // Database targets push natively using standard syntax
             if (typeof firebase !== 'undefined' && firebase.apps.length > 0) {
                 firebase.database().ref('orders/').push(globalOrderData)
                     .then(() => triggerCelebrationPopup())
@@ -921,7 +914,7 @@
                                   `📍 *Delivery Address:* \n${data.deliveryAddress}\n\n` +
                                   `📮 *Pincode:* ${data.deliveryPincode}\n\n` +
                                   `🚚 *Delivery Charges:* Will be calculated by weight and distance.\n\n` +
-                                  `🖼 *Images:* ${data.uploadedImages}\n\n` +
+                                  `🖼️ *Images:* ${data.uploadedImages}\n\n` +
                                   `📝 *Special Notes:* \n${data.customerNotes}\n\n` +
                                   `💳 *Payment Verification:* Please send your online payment screenshot.\n\n` +
                                   `⚠️ *Store Terms:* Custom orders cannot be canceled or returned once processing begins. For any shipping damages, an unedited unboxing video clip must be shared for a free replacement.\n\n` +
